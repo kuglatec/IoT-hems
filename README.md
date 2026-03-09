@@ -1,6 +1,6 @@
 # IoT-hems
 
-A Home Energy Management System (HEMS) built with a **Raspberry Pi** as the central host and **ESP32** microcontrollers as IoT clients. The system supports temperature monitoring, lighting control, and optional camera integration.
+An IoT project developed at **HEMS** school, built with a **Raspberry Pi** as the central host and **ESP32** microcontrollers as IoT clients. The system supports temperature monitoring, lighting control, and optional camera integration.
 
 ---
 
@@ -20,7 +20,7 @@ A Home Energy Management System (HEMS) built with a **Raspberry Pi** as the cent
 
 ## Overview
 
-IoT-hems connects one or more ESP32 devices to a central Raspberry Pi hub over Wi-Fi. Each ESP32 node can sense its environment (temperature, light levels) and control actuators (LEDs, relays for lighting). An optional camera module can be attached to either the Raspberry Pi or an ESP32-CAM for visual monitoring.
+IoT-hems connects one or more ESP32 devices to a central Raspberry Pi hub over Wi-Fi. Each ESP32 node can sense its environment (temperature, light levels) and control actuators (LEDs, relays for lighting). An optional camera module can be attached to either the Raspberry Pi or an ESP32-CAM for visual monitoring. This project is developed as part of coursework at HEMS school.
 
 ---
 
