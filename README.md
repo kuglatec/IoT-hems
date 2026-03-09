@@ -1,131 +1,131 @@
 # IoT-hems
 
-An IoT project developed at **HEMS** school, built with a **Raspberry Pi** as the central host and **ESP32** microcontrollers as IoT clients. The system supports temperature monitoring, lighting control, and optional camera integration.
+Ein Schulprojekt im Informatikunterricht der **HEMS**-Schule. Das System nutzt einen **Raspberry Pi** als zentralen Host und **ESP32**-Mikrocontroller als IoT-Clients. Es unterstützt Temperaturanzeige, Lichtsteuerung und optional eine Kamera.
 
 ---
 
-## Table of Contents
+## Inhaltsverzeichnis
 
-- [Overview](#overview)
-- [Hardware Requirements](#hardware-requirements)
-- [System Architecture](#system-architecture)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Raspberry Pi Setup](#raspberry-pi-setup)
-  - [ESP32 Client Setup](#esp32-client-setup)
-- [Project Structure](#project-structure)
-- [License](#license)
-
----
-
-## Overview
-
-IoT-hems connects one or more ESP32 devices to a central Raspberry Pi hub over Wi-Fi. Each ESP32 node can sense its environment (temperature, light levels) and control actuators (LEDs, relays for lighting). An optional camera module can be attached to either the Raspberry Pi or an ESP32-CAM for visual monitoring. This project is developed as part of coursework at HEMS school.
+- [Überblick](#überblick)
+- [Hardwareanforderungen](#hardwareanforderungen)
+- [Systemarchitektur](#systemarchitektur)
+- [Funktionen](#funktionen)
+- [Inbetriebnahme](#inbetriebnahme)
+  - [Raspberry Pi einrichten](#raspberry-pi-einrichten)
+  - [ESP32-Client einrichten](#esp32-client-einrichten)
+- [Projektstruktur](#projektstruktur)
+- [Lizenz](#lizenz)
 
 ---
 
-## Hardware Requirements
+## Überblick
+
+IoT-hems verbindet einen oder mehrere ESP32-Geräte über WLAN mit einem zentralen Raspberry Pi. Jeder ESP32-Knoten kann seine Umgebung erfassen (Temperatur, Lichtverhältnisse) und Aktoren steuern (LEDs, Relais für Beleuchtung). Optional kann ein Kameramodul am Raspberry Pi oder als ESP32-CAM zur visuellen Überwachung eingesetzt werden. Dieses Projekt wurde im Rahmen des Informatikunterrichts an der HEMS-Schule entwickelt.
+
+---
+
+## Hardwareanforderungen
 
 ### Host (Raspberry Pi)
-- Raspberry Pi 3 / 4 / Zero 2 W (or newer)
-- MicroSD card (8 GB or larger, class 10 recommended)
-- Power supply (5 V / 3 A)
-- Wi-Fi connection (built-in or USB adapter)
+- Raspberry Pi 3 / 4 / Zero 2 W (oder neuer)
+- MicroSD-Karte (mindestens 8 GB, Klasse 10 empfohlen)
+- Netzteil (5 V / 3 A)
+- WLAN-Verbindung (integriert oder per USB-Adapter)
 
-### IoT Clients (ESP32)
-- ESP32 development board (e.g., ESP32-DevKitC, ESP32-WROOM-32)
-- Temperature sensor (e.g., DHT22 / DS18B20 / BME280)
-- LED or relay module for lighting control
-- *(Optional)* ESP32-CAM module for camera support
+### IoT-Clients (ESP32)
+- ESP32-Entwicklungsboard (z. B. ESP32-DevKitC, ESP32-WROOM-32)
+- Temperatursensor (z. B. DHT22 / DS18B20 / BME280)
+- LED oder Relaismodul zur Lichtsteuerung
+- *(Optional)* ESP32-CAM-Modul für Kameraunterstützung
 
 ---
 
-## System Architecture
+## Systemarchitektur
 
 ```
 ┌──────────────────────────────────────┐
-│           Raspberry Pi (Host)        │
-│  - MQTT Broker (e.g. Mosquitto)      │
-│  - Dashboard / Web UI                │
-│  - Optional: Camera stream           │
+│         Raspberry Pi (Host)          │
+│  - MQTT-Broker (z. B. Mosquitto)     │
+│  - Dashboard / Web-Oberfläche        │
+│  - Optional: Kamera-Stream           │
 └────────────────┬─────────────────────┘
-                 │ Wi-Fi / MQTT
+                 │ WLAN / MQTT
       ┌──────────┴──────────┐
       │                     │
 ┌─────▼──────┐       ┌──────▼─────┐
 │  ESP32 #1  │  ...  │  ESP32 #N  │
 │ - Temp     │       │ - Temp     │
-│ - Lighting │       │ - Lighting │
-│ - (Camera) │       │            │
+│ - Licht    │       │ - Licht    │
+│ - (Kamera) │       │            │
 └────────────┘       └────────────┘
 ```
 
-The Raspberry Pi runs an MQTT broker. Each ESP32 client connects to the broker, publishes sensor readings, and subscribes to control topics for actuators.
+Der Raspberry Pi betreibt einen MQTT-Broker. Jeder ESP32-Client verbindet sich mit dem Broker, veröffentlicht Sensordaten und abonniert Steuerungsbefehle für Aktoren.
 
 ---
 
-## Features
+## Funktionen
 
-| Feature              | Description                                                        |
-|----------------------|--------------------------------------------------------------------|
-| Temperature Display  | Each ESP32 reads a temperature sensor and publishes readings over MQTT. The Raspberry Pi aggregates and displays values on a dashboard. |
-| Lighting Control     | ESP32 nodes control LEDs or relay-switched lights via MQTT commands from the host. |
-| Camera (optional)    | An ESP32-CAM or USB/CSI camera on the Raspberry Pi can stream or capture images for monitoring. |
+| Funktion              | Beschreibung                                                                                              |
+|-----------------------|-----------------------------------------------------------------------------------------------------------|
+| Temperaturanzeige     | Jeder ESP32 liest einen Temperatursensor aus und sendet die Messwerte per MQTT. Der Raspberry Pi sammelt und zeigt die Werte auf einem Dashboard an. |
+| Lichtsteuerung        | ESP32-Knoten steuern LEDs oder relaisgeschaltete Lampen über MQTT-Befehle des Hosts.                      |
+| Kamera (optional)     | Ein ESP32-CAM oder eine USB-/CSI-Kamera am Raspberry Pi kann Bilder streamen oder aufnehmen.              |
 
 ---
 
-## Getting Started
+## Inbetriebnahme
 
-### Raspberry Pi Setup
+### Raspberry Pi einrichten
 
-1. **Install Raspberry Pi OS** (Lite or Desktop) on your SD card using [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
+1. **Raspberry Pi OS** (Lite oder Desktop) mit dem [Raspberry Pi Imager](https://www.raspberrypi.com/software/) auf die SD-Karte installieren.
 
-2. **Enable Wi-Fi and SSH** in the imager settings or via `raspi-config`.
+2. **WLAN und SSH** in den Imager-Einstellungen oder über `raspi-config` aktivieren.
 
-3. **Install an MQTT broker** (Mosquitto):
+3. **MQTT-Broker installieren** (Mosquitto):
    ```bash
    sudo apt update && sudo apt install -y mosquitto mosquitto-clients
    sudo systemctl enable mosquitto
    sudo systemctl start mosquitto
    ```
 
-4. *(Optional)* **Install a dashboard** such as Node-RED or Home Assistant to visualize sensor data and control devices.
+4. *(Optional)* **Dashboard installieren**, z. B. Node-RED oder Home Assistant, um Sensordaten anzuzeigen und Geräte zu steuern.
 
-### ESP32 Client Setup
+### ESP32-Client einrichten
 
-1. Install the [Arduino IDE](https://www.arduino.cc/en/software) or [PlatformIO](https://platformio.org/).
+1. [Arduino IDE](https://www.arduino.cc/en/software) oder [PlatformIO](https://platformio.org/) installieren.
 
-2. Add ESP32 board support:
-   - Arduino IDE: add `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json` in *Preferences → Additional Board Manager URLs*, then install **esp32** via the Board Manager.
+2. ESP32-Board-Unterstützung hinzufügen:
+   - Arduino IDE: `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json` unter *Einstellungen → Zusätzliche Boardverwalter-URLs* eintragen, dann **esp32** über den Board-Manager installieren.
 
-3. Install required libraries (via Arduino Library Manager or PlatformIO):
-   - `PubSubClient` – MQTT client
-   - `DHT sensor library` (or the library matching your sensor)
-   - `WiFi` (included with ESP32 Arduino core)
+3. Benötigte Bibliotheken installieren (über den Arduino-Bibliotheksverwalter oder PlatformIO):
+   - `PubSubClient` – MQTT-Client
+   - `DHT sensor library` (oder passende Bibliothek für den verwendeten Sensor)
+   - `WiFi` (im ESP32-Arduino-Core enthalten)
 
-4. Open `src/clients/client.ino`, configure your Wi-Fi credentials and the Raspberry Pi's IP address, then flash to the ESP32.
+4. `src/clients/client.ino` öffnen, WLAN-Zugangsdaten und die IP-Adresse des Raspberry Pi eintragen und den Sketch auf den ESP32 hochladen.
 
-5. After flashing, the ESP32 will:
-   - Connect to Wi-Fi
-   - Connect to the MQTT broker on the Raspberry Pi
-   - Publish temperature readings to `hems/<device_id>/temperature`
-   - Subscribe to `hems/<device_id>/light` for lighting commands (`ON` / `OFF`)
+5. Nach dem Hochladen verbindet sich der ESP32:
+   - mit dem WLAN
+   - mit dem MQTT-Broker auf dem Raspberry Pi
+   - veröffentlicht Temperaturwerte unter `hems/<geraete_id>/temperatur`
+   - abonniert `hems/<geraete_id>/licht` für Lichtbefehle (`AN` / `AUS`)
 
 ---
 
-## Project Structure
+## Projektstruktur
 
 ```
 IoT-hems/
 ├── src/
 │   └── clients/
-│       └── client.ino   # Arduino sketch for ESP32 IoT clients
+│       └── client.ino   # Arduino-Sketch für ESP32-IoT-Clients
 ├── LICENSE
 └── README.md
 ```
 
 ---
 
-## License
+## Lizenz
 
-This project is licensed under the terms of the [LICENSE](LICENSE) file included in this repository.
+Dieses Projekt steht unter den Bedingungen der [LICENSE](LICENSE)-Datei in diesem Repository.
